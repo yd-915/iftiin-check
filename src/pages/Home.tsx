@@ -38,14 +38,14 @@ const UserInputMain = styled.form`
   z-index: 2;
 `;
 
-const FindIpButton = styled.a`
-  margin: 0.5rem;
-  cursor: pointer;
-  display: block;
-  text-align: center;
-  color: ${colors.primary};
-  text-decoration: underline;
-`;
+// const FindIpButton = styled.a`
+//   margin: 0.5rem;
+//   cursor: pointer;
+//   display: block;
+//   text-align: center;
+//   color: ${colors.primary};
+//   text-decoration: underline;
+// `;
 
 const ErrorMessage = styled.p`
   color: ${colors.danger};
@@ -60,8 +60,15 @@ const SiteFeaturesWrapper = styled(StyledCard)`
   .links {
     display: flex;
     justify-content: center;
+    gap: 0.5rem;
     a {
       width: 100%;
+      button {
+        width: calc(100% - 2rem);
+      }
+    }
+    @media(max-width: 600px) {
+      flex-wrap: wrap;
     }
   }
   ul {
@@ -91,8 +98,8 @@ const Home = (): JSX.Element => {
   const defaultPlaceholder = 'e.g. https://duck.com/';
   const [userInput, setUserInput] = useState('');
   const [errorMsg, setErrMsg] = useState('');
-  const [placeholder, setPlaceholder] = useState(defaultPlaceholder);
-  const [inputDisabled, setInputDisabled] = useState(false);
+  const [placeholder] = useState(defaultPlaceholder);
+  const [inputDisabled] = useState(false);
   const navigate = useNavigate();
 
   /* Check is valid address, either show err or redirect to results page */
@@ -122,22 +129,22 @@ const Home = (): JSX.Element => {
     if (!isError) setErrMsg('');
   };
 
-  const findIpAddress = () => {
-    setUserInput('');
-    setPlaceholder('Looking up your IP...');
-    setInputDisabled(true);
-    fetch('https://ipapi.co/json/')
-      .then(function(response) {
-        response.json().then(jsonData => {
-          setUserInput(jsonData.ip);
-          setPlaceholder(defaultPlaceholder);
-          setInputDisabled(true);
-        });
-      })
-      .catch(function(error) {
-        console.log('Failed to get IP address :\'(', error)
-      });
-  };
+  // const findIpAddress = () => {
+  //   setUserInput('');
+  //   setPlaceholder('Looking up your IP...');
+  //   setInputDisabled(true);
+  //   fetch('https://ipapi.co/json/')
+  //     .then(function(response) {
+  //       response.json().then(jsonData => {
+  //         setUserInput(jsonData.ip);
+  //         setPlaceholder(defaultPlaceholder);
+  //         setInputDisabled(true);
+  //       });
+  //     })
+  //     .catch(function(error) {
+  //       console.log('Failed to get IP address :\'(', error)
+  //     });
+  // };
 
   const formSubmitEvent = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -175,8 +182,15 @@ const Home = (): JSX.Element => {
           </ul>
         </div>
         <div className="links">
-          <a href="https://app.netlify.com/start/deploy?repository=https://github.com/lissy93/web-check"><Button>Deploy your own Instance</Button></a>
-          <a href="https://github.com/lissy93/web-check"><Button>View on GitHub</Button></a>
+          <a href="https://github.com/lissy93/web-check" title="Check out the source code and documentation on GitHub, and get support or contribute">
+            <Button>View on GitHub</Button>
+          </a>
+          <a href="https://app.netlify.com/start/deploy?repository=https://github.com/lissy93/web-check" title="Deploy your own private or public instance of Web-Check to Netlify">
+            <Button>Deploy your own</Button>
+          </a>
+          <a href="/about#api-documentation" title="View the API documentation, to use Web-Check programmatically">
+            <Button>API Docs</Button>
+          </a>
         </div>
       </SiteFeaturesWrapper>
       <Footer isFixed={true} />
